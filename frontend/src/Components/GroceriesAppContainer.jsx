@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { useNavigate, Link } from "react-router-dom";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 import NavBar from "./NavBar";
@@ -23,7 +24,7 @@ export default function GroceriesAppContainer() {
 
   useEffect(() => {
     handleProductsFromDB();
-  }, [postResponse]);
+  }, []);
 
   ////////Handlers//////////
   const initialProductQuantity = (prods) =>
@@ -199,6 +200,7 @@ export default function GroceriesAppContainer() {
     <div>
       <NavBar quantity={cartList.length} />
       <div className="GroceriesApp-Container">
+        <Link to="/add-product">Add product</Link>
         <ProductForm
           handleOnSubmit={handleOnSubmit}
           postResponse={postResponse}
