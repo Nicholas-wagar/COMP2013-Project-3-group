@@ -26,9 +26,18 @@ export default function LoginPage() {
       });
       setPostResponse(response.data.message);
 
+      // determines if user is admin and sets cookie accordingly
       if (response.status === 200) {
         Cookies.set("jwt-authorization", response.data.token);
+
+        if (formData.username === "admin") {
+          Cookies.set("isAdmin", "true");
+        }
+          else {
+            Cookies.remove("isAdmin");
+          }
         navigate("/main");
+
       }
     } catch (error) {
       setPostResponse(

@@ -10,6 +10,8 @@ import EditProduct from "./Components/EditProduct";
 import PageNotFound from "./Components/PageNotFound";
 import NotAuthorized from "./Components/NotAuthorized";
 import GroceriesAppContainer from "./Components/GroceriesAppContainer";
+import ProtectedRoute from "./Components/ProtectedRoute";
+
 function App() {
   return (
     <>
@@ -17,9 +19,9 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/create-user" element={<CreateUserPage />} />
-          <Route path="/main" element={<GroceriesAppContainer />} />
-          <Route path="/add-product" element={<AddProduct />} />
-          <Route path="/edit-product" element={<EditProduct />} />
+          <Route path="/main" element={<ProtectedRoute Component={GroceriesAppContainer} />} />
+          <Route path="/add-product" element={<ProtectedRoute Component={AddProduct} />} />
+          <Route path="/edit-product" element={<ProtectedRoute Component={EditProduct} />} />
           <Route path="/not-authorized" element={<NotAuthorized />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>
