@@ -93,6 +93,17 @@
   width: 50%;
 }
 
+.FilterPrice {
+  position: relative;
+  border: 2px wheat solid;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 5px;
+  text-align: left;
+  width: 120px;
+  height: 100%;
+}
+
 .ProductsContainer {
   width: 60%;
   max-width: 800px;

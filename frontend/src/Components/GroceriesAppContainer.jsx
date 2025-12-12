@@ -183,6 +183,7 @@ export default function GroceriesAppContainer() {
             `${result.data.productName} deleted\n with id: ${result.data.id}`
           );
         });
+      handleProductsFromDB();
     } catch (error) {
       console.log(error.message);
     }
@@ -219,10 +220,62 @@ export default function GroceriesAppContainer() {
   /////////Renderer
   return (
     <div>
-      {!currentUser || !currentUser.isAdmin ? (
-        <div>
-          <NavBar quantity={cartList.length} />
-          <div className="GroceriesApp-Container">
+      <div>
+        <NavBar quantity={cartList.length} />
+        <div className="GroceriesApp-Container">
+          <div className="FilterPrice">
+            <h3>Filter Price</h3>
+            <form>
+              <input
+                type="radio"
+                id="all"
+                name="price"
+                value="all"
+              />
+              <label htmlFor="all">Show All</label>
+              <br></br>
+              <input
+                type="radio"
+                id="1"
+                name="price"
+                value="1"
+              />
+              <label htmlFor="1">&lt; 1.00$</label>
+              <br></br>
+              <input
+                type="radio"
+                id="2"
+                name="price"
+                value="2"
+              />
+              <label htmlFor="2">&lt; 2.00$</label>
+              <br></br>
+              <input
+                type="radio"
+                id="4"
+                name="price"
+                value="4"
+              />
+              <label htmlFor="4">&lt; 4.00$</label>
+              <br></br>
+              <input
+                type="radio"
+                id="6"
+                name="price"
+                value="6"
+              />
+              <label htmlFor="6">&lt; 6.00$</label>
+              <br></br>
+              <input
+                type="radio"
+                id="9"
+                name="price"
+                value="9"
+              />
+              <label htmlFor="9">&lt; 9.00$</label>
+            </form>
+          </div>
+          {!currentUser || !currentUser.isAdmin ? (
             <ProductsContainer
               products={productList}
               handleAddQuantity={handleAddQuantity}
@@ -230,19 +283,7 @@ export default function GroceriesAppContainer() {
               handleAddToCart={handleAddToCart}
               productQuantity={productQuantity}
             />
-            <CartContainer
-              cartList={cartList}
-              handleRemoveFromCart={handleRemoveFromCart}
-              handleAddQuantity={handleAddQuantity}
-              handleRemoveQuantity={handleRemoveQuantity}
-              handleClearCart={handleClearCart}
-            />
-          </div>
-        </div>
-      ) : (
-        <div>
-          <NavBar quantity={cartList.length} />
-          <div className="GroceriesApp-Container">
+          ) : (
             <ProductsContainer
               products={productList}
               handleAddQuantity={handleAddQuantity}
@@ -252,16 +293,16 @@ export default function GroceriesAppContainer() {
               handleEditProduct={handleEditProduct}
               handleDeleteProduct={handleDeleteProduct}
             />
-            <CartContainer
-              cartList={cartList}
-              handleRemoveFromCart={handleRemoveFromCart}
-              handleAddQuantity={handleAddQuantity}
-              handleRemoveQuantity={handleRemoveQuantity}
-              handleClearCart={handleClearCart}
-            />
-          </div>
+          )}
+          <CartContainer
+            cartList={cartList}
+            handleRemoveFromCart={handleRemoveFromCart}
+            handleAddQuantity={handleAddQuantity}
+            handleRemoveQuantity={handleRemoveQuantity}
+            handleClearCart={handleClearCart}
+          />
         </div>
-      )}
+      </div>
     </div>
   );
 }
