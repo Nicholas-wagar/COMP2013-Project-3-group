@@ -1,11 +1,11 @@
 import { jwtDecode } from "jwt-decode";
 import Cookies from "js-cookie";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function NavBar({ quantity, handleLogout }) {
   // load user
-  const [currentUser, setCurrentUser] = useState(() => {
+  const [currentUser] = useState(() => {
     const jwtToken = Cookies.get("jwt-authorization");
     if (!jwtToken) {
       return "";

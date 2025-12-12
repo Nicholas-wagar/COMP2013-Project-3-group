@@ -44,9 +44,7 @@ export default function GroceriesAppContainer() {
 
   //////////useEffect////////
 
-  useEffect(() => {
-    handleProductsFromDB();
-  }, []);
+ 
 
   ////////Handlers//////////
   const initialProductQuantity = (prods) =>
@@ -65,6 +63,10 @@ export default function GroceriesAppContainer() {
       console.log(error.message);
     }
   };
+  
+   useEffect(() => {
+    handleProductsFromDB();
+  }, []);
 
   const handleOnChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
