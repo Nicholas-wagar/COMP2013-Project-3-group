@@ -56,7 +56,7 @@ server.post("/login", async (request, response) => {
       return response.status(400).send({ message: "Invalid credintials" });
     }
     const token = jwt.sign(
-      { id: user._id, username: user.username },
+      { id: user._id, username: user.username, isAdmin: user.isAdmin},
       SECRET_KEY
     );
 

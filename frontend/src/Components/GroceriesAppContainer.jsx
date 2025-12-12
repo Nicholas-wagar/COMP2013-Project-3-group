@@ -79,14 +79,15 @@ export default function GroceriesAppContainer() {
   };
 
   const handleEditProduct = (product) => {
-    setFormData({
+    /*setFormData({
       productName: product.productName,
       brand: product.brand,
       image: product.image,
       price: product.price,
       _id: product._id,
     });
-    setIsEditing(true);
+    setIsEditing(true);*/
+    navigate("/edit-product", { state: product });
     setPostResponse("");
   };
 
