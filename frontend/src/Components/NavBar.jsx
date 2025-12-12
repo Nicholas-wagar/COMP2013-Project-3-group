@@ -48,6 +48,7 @@ export default function NavBar({ quantity }) {
         <div className="NavBtns">
           <button className="NavDiv NavLogoutBtn">Logout</button>
           {!currentUser || !currentUser.isAdmin ? null : (
+            /*If admin, show add product button*/
             <button
               className="NavDiv NavProductBtn"
               onClick={() => navigate("/add-product")}

@@ -7,12 +7,14 @@ import ProductsContainer from "./ProductsContainer";
 import NavBar from "./NavBar";
 import axios from "axios";
 import ProductForm from "./ProductForm";
+import FilterPricesForm from "./FilterPricesForm";
 
 export default function GroceriesAppContainer() {
   /////////// States ///////////
   const [productQuantity, setProductQuantity] = useState();
   const [cartList, setCartList] = useState([]);
   const [productList, setProductList] = useState([]);
+  const [productsDisplay, setProductsDisplay] = useState([]);
   const [postResponse, setPostResponse] = useState("");
   const [formData, setFormData] = useState({
     productName: "",
@@ -21,6 +23,7 @@ export default function GroceriesAppContainer() {
     price: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+  //load user
   const [currentUser, setCurrentUser] = useState(() => {
     const jwtToken = Cookies.get("jwt-authorization");
     if (!jwtToken) {
@@ -55,6 +58,7 @@ export default function GroceriesAppContainer() {
     try {
       await axios.get("http://localhost:3000/products").then((result) => {
         setProductList(result.data);
+        setProductsDisplay(result.data);
         setProductQuantity(initialProductQuantity(result.data));
       });
     } catch (error) {
@@ -217,83 +221,39 @@ export default function GroceriesAppContainer() {
     setCartList([]);
   };
 
+  //Get price from string
+  const priceSanitizer = (price) => {
+    return Number(price.replace("$", "").replace(",", ""));
+  };
+
+  //Filter products by price
+  const handleFilterPrices = (e) => {
+    const maxPrice = e.target.value;
+    if (maxPrice !== "all") {
+      setProductsDisplay(
+        productList.filter((product) => priceSanitizer(product.price) < maxPrice)
+      );
+    } else {
+      setProductsDisplay(productList);
+    }
+  };
+
   /////////Renderer
   return (
     <div>
       <div>
         <NavBar quantity={cartList.length} />
         <div className="GroceriesApp-Container">
-          <div className="FilterPrice">
-            <h3>Filter Price</h3>
-            <form>
-              <input
-                type="radio"
-                id="all"
-                name="price"
-                value="all"
-              />
-              <label htmlFor="all">Show All</label>
-              <br></br>
-              <input
-                type="radio"
-                id="1"
-                name="price"
-                value="1"
-              />
-              <label htmlFor="1">&lt; 1.00$</label>
-              <br></br>
-              <input
-                type="radio"
-                id="2"
-                name="price"
-                value="2"
-              />
-              <label htmlFor="2">&lt; 2.00$</label>
-              <br></br>
-              <input
-                type="radio"
-                id="4"
-                name="price"
-                value="4"
-              />
-              <label htmlFor="4">&lt; 4.00$</label>
-              <br></br>
-              <input
-                type="radio"
-                id="6"
-                name="price"
-                value="6"
-              />
-              <label htmlFor="6">&lt; 6.00$</label>
-              <br></br>
-              <input
-                type="radio"
-                id="9"
-                name="price"
-                value="9"
-              />
-              <label htmlFor="9">&lt; 9.00$</label>
-            </form>
-          </div>
-          {!currentUser || !currentUser.isAdmin ? (
-            <ProductsContainer
-              products={productList}
-              handleAddQuantity={handleAddQuantity}
-              handleRemoveQuantity={handleRemoveQuantity}
-              handleAddToCart={handleAddToCart}
-              productQuantity={productQuantity}
-            />
-          ) : (
-            <ProductsContainer
-              products={productList}
-              handleAddQuantity={handleAddQuantity}
-              handleRemoveQuantity={handleRemoveQuantity}
-              handleAddToCart={handleAddToCart}
-              productQuantity={productQuantity}
-              handleEditProduct={handleEditProduct}
-              handleDeleteProduct={handleDeleteProduct}
-            />
-          )}
+          <FilterPricesForm handleFilterPrices={handleFilterPrices} />
+          <ProductsContainer
+            products={productsDisplay}
+            handleAddQuantity={handleAddQuantity}
+            handleRemoveQuantity={handleRemoveQuantity}
+            handleAddToCart={handleAddToCart}
+            productQuantity={productQuantity}
+            handleEditProduct={handleEditProduct}
+            handleDeleteProduct={handleDeleteProduct}
+          />
           <CartContainer
             cartList={cartList}
             handleRemoveFromCart={handleRemoveFromCart}

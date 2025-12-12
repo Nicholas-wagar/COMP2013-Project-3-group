@@ -49,6 +49,7 @@ export default function ProductCard({
       <h3>{price}</h3>
       <button onClick={() => handleAddToCart(id)}>Add to Cart</button>
       {!currentUser || !currentUser.isAdmin ? null : (
+        /*If admin, show edit and delete buttons*/
         <div>
           <button
             id="edit-button"
