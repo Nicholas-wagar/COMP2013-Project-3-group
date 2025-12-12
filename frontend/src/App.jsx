@@ -18,10 +18,12 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<LoginPage />} />
+          <Route element={<PrivateRoute />}>
+            <Route path="/main" element={<GroceriesAppContainer />} />
+            <Route path="/add-product" element={<AddProduct />} />
+            <Route path="/edit-product" element={<EditProduct />} />
+          </Route>
           <Route path="/create-user" element={<CreateUserPage />} />
-          <Route path="/main" element={<ProtectedRoute Component={GroceriesAppContainer}  />} />
-          <Route path="/add-product" element={<ProtectedRoute Component={AddProduct} />} />
-          <Route path="/edit-product" element={<ProtectedRoute Component={EditProduct} />} />
           <Route path="/not-authorized" element={<NotAuthorized />} />
           <Route path="*" element={<PageNotFound />} />
         </Routes>

@@ -1,10 +1,9 @@
 //protected route component to restrict access to authenticated users only
 import Cookies from "js-cookie";
 import { jwtDecode } from "jwt-decode";
+import { Outlet, Navigate } from "react-router-dom";
 
-import { Navigate } from "react-router-dom";
-
-export default function ProtectedRoute({ Component }) {
+export default function ProtectedRoute() {
     const token = Cookies.get("jwt-authorization");
 
     if (!token) {
@@ -21,7 +20,7 @@ export default function ProtectedRoute({ Component }) {
     
     const isAuth = decodedToken.isAdmin;
     
-    return isAuth ? <Component /> : <Navigate to="/"/>;
+    return isAuth ? <Outlet /> : <Navigate to="/"/>;
 
 
 };
