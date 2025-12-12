@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
+import { jwtDecode } from "jwt-decode";
+import Cookies from "js-cookie";
 import CartContainer from "./CartContainer";
 import ProductsContainer from "./ProductsContainer";
 import NavBar from "./NavBar";
@@ -19,6 +21,23 @@ export default function GroceriesAppContainer() {
     price: "",
   });
   const [isEditing, setIsEditing] = useState(false);
+  const [currentUser, setCurrentUser] = useState(() => {
+    const jwtToken = Cookies.get("jwt-authorization");
+    if (!jwtToken) {
+      return "";
+    }
+    //Decode token to extract username + admin status
+    try {
+      const decodedToken = jwtDecode(jwtToken);
+      return {
+        username: decodedToken.username,
+        isAdmin: decodedToken.isAdmin,
+      };
+    } catch {
+      return "";
+    }
+  });
+  const navigate = useNavigate();
 
   //////////useEffect////////
 
@@ -196,36 +215,53 @@ export default function GroceriesAppContainer() {
   const handleClearCart = () => {
     setCartList([]);
   };
+
   /////////Renderer
   return (
     <div>
-      <NavBar quantity={cartList.length} />
-      <div className="GroceriesApp-Container">
-        <Link to="/add-product">Add product</Link>
-        <ProductForm
-          handleOnSubmit={handleOnSubmit}
-          postResponse={postResponse}
-          handleOnChange={handleOnChange}
-          formData={formData}
-          isEditing={isEditing}
-        />
-        <ProductsContainer
-          products={productList}
-          handleAddQuantity={handleAddQuantity}
-          handleRemoveQuantity={handleRemoveQuantity}
-          handleAddToCart={handleAddToCart}
-          productQuantity={productQuantity}
-          handleEditProduct={handleEditProduct}
-          handleDeleteProduct={handleDeleteProduct}
-        />
-        <CartContainer
-          cartList={cartList}
-          handleRemoveFromCart={handleRemoveFromCart}
-          handleAddQuantity={handleAddQuantity}
-          handleRemoveQuantity={handleRemoveQuantity}
-          handleClearCart={handleClearCart}
-        />
-      </div>
+      {!currentUser || !currentUser.isAdmin ? (
+        <div>
+          <NavBar quantity={cartList.length} />
+          <div className="GroceriesApp-Container">
+            <ProductsContainer
+              products={productList}
+              handleAddQuantity={handleAddQuantity}
+              handleRemoveQuantity={handleRemoveQuantity}
+              handleAddToCart={handleAddToCart}
+              productQuantity={productQuantity}
+            />
+            <CartContainer
+              cartList={cartList}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleAddQuantity={handleAddQuantity}
+              handleRemoveQuantity={handleRemoveQuantity}
+              handleClearCart={handleClearCart}
+            />
+          </div>
+        </div>
+      ) : (
+        <div>
+          <NavBar quantity={cartList.length} />
+          <div className="GroceriesApp-Container">
+            <ProductsContainer
+              products={productList}
+              handleAddQuantity={handleAddQuantity}
+              handleRemoveQuantity={handleRemoveQuantity}
+              handleAddToCart={handleAddToCart}
+              productQuantity={productQuantity}
+              handleEditProduct={handleEditProduct}
+              handleDeleteProduct={handleDeleteProduct}
+            />
+            <CartContainer
+              cartList={cartList}
+              handleRemoveFromCart={handleRemoveFromCart}
+              handleAddQuantity={handleAddQuantity}
+              handleRemoveQuantity={handleRemoveQuantity}
+              handleClearCart={handleClearCart}
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }

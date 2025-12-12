@@ -9,9 +9,6 @@
 
 .NavBar {
   background-color: rgb(76, 43, 226);
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
   padding: 10px;
   border-radius: 8px;
   height: 100%;
@@ -35,6 +32,25 @@
 .NavUser {
   text-align: left;
   padding: 0 10px;
+}
+
+.NavBarTop {
+  display: flex;
+}
+
+.NavBtns {
+  display: flex;
+  justify-content: left;
+}
+
+.NavLogoutBtn {
+  width: 100px;
+}
+
+.NavProductBtn {
+  width: 200px;
+  display: inline-block;
+  margin-left: 380px;
 }
 
 .GroceriesApp-Container {

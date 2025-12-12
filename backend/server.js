@@ -30,12 +30,13 @@ server.get("/", (request, response) => {
 });
 
 server.post("/register", async (request, response) => {
-  const { username, password } = request.body;
+  const { username, password, isAdmin} = request.body;
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
     const user = new User({
       username,
       password: hashedPassword,
+      isAdmin,
     });
     await user.save();
     response.status(201).send({ message: "User created!" });
