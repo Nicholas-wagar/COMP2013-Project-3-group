@@ -10,9 +10,6 @@ export default function ProtectedRoute({ Component }) {
         return <Navigate to="/not-authorized" />;
     }
     const [currentUser, setCurrentUser] = useState(() => {
-        if (!token) {
-          return "";
-        }
         //Decode token to extract admin status
         try {
           const decodedToken = jwtDecode(token);
@@ -20,7 +17,7 @@ export default function ProtectedRoute({ Component }) {
             isAdmin: decodedToken.isAdmin,
           };
         } catch {
-          return "";
+          return <Navigate to="/not-authorized" />;
         }
       });
 

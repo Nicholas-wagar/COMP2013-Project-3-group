@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-export default function NavBar({ quantity }) {
+export default function NavBar({ quantity, handleLogout }) {
   // load user
   const [currentUser, setCurrentUser] = useState(() => {
     const jwtToken = Cookies.get("jwt-authorization");
@@ -46,7 +46,8 @@ export default function NavBar({ quantity }) {
       </div>
       <div>
         <div className="NavBtns">
-          <button className="NavDiv NavLogoutBtn">Logout</button>
+          <button className="NavDiv NavLogoutBtn" 
+          onClick={handleLogout}>Logout</button>
           {!currentUser || !currentUser.isAdmin ? null : (
             /*If admin, show add product button*/
             <button

@@ -221,6 +221,12 @@ export default function GroceriesAppContainer() {
     setCartList([]);
   };
 
+  const handleLogout = () => {
+    Cookies.remove("jwt-authorization");
+    setCurrentUser("");
+    navigate("/");
+  }
+
   //Get price from string
   const priceSanitizer = (price) => {
     return Number(price.replace("$", "").replace(",", ""));
@@ -242,7 +248,7 @@ export default function GroceriesAppContainer() {
   return (
     <div>
       <div>
-        <NavBar quantity={cartList.length} />
+        <NavBar quantity={cartList.length} handleLogout={handleLogout}/>
         <div className="GroceriesApp-Container">
           <FilterPricesForm handleFilterPrices={handleFilterPrices} />
           <ProductsContainer
